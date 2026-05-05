@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Knotique – Handmade Crochet Wonders</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italiana&family=Nunito:wght@300;400;500;600;700&family=Dancing+Script:wght@600&display=swap"
+      rel="stylesheet">
+    <style>
+/* ═══════════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════════ */
+:root{
+  --rose:       #E8557A;
+  --rose-deep:  #C73D62;
+  --rose-soft:  #F4A7BB;
+  --blush:      #FDE8F0;
+  --blush-deep: #FAD0E0;
+  --cream:      #FFFBF6;
+  --warm:       #FFF5EC;
+  --mauve:      #D4A5C9;
+  --mauve-lt:   #F5EAF5;
+  --teal:       #4EADA7;
+  --teal-lt:    #E0F4F3;
+  --gold:       #E8B84B;
+  --gold-lt:    #FEF5DC;
+  --sage:       #7BB68A;
+  --sage-lt:    #E8F5EC;
+  --lavender:   #9B7EC8;
+  --lav-lt:     #F0EAFF;
+  --coral:      #F07857;
+  --coral-lt:   #FEF0EB;
+  --dark:       #1A0A10;
+  --dark-mid:   #4A2035;
+  --mid:        #7A4560;
+  --muted:      #B08095;
+  --border:     rgba(232,85,122,0.15);
+  --shadow:     rgba(200,61,98,0.12);
+  --shadow-lg:  rgba(200,61,98,0.22);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden;}
+img{max-width:100%;display:block;}
+a{text-decoration:none;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:var(--rose-soft);border-radius:4px;}
+
+/* ═══════════════════════════════════════════
+   CURSOR SPARKLE
+═══════════════════════════════════════════ */
+.sparkle{
+  position:fixed;pointer-events:none;z-index:9999;
+  font-size:14px;animation:sparkFade 0.8s ease forwards;
+}
+@keyframes sparkFade{0%{opacity:1;transform:scale(1) translateY(0);}100%{opacity:0;transform:scale(0.3) translateY(-30px);}}
+
+/* ═══════════════════════════════════════════
+   LOADER
+═══════════════════════════════════════════ */
+#loader{
+  position:fixed;inset:0;z-index:9998;
+  background:linear-gradient(135deg,#FDE8F0,#F5EAF5);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  transition:opacity 0.6s ease,visibility 0.6s ease;
+}
+#loader.gone{opacity:0;visibility:hidden;}
+.loader-logo{font-family:'Italiana',serif;font-size:42px;color:var(--rose-deep);letter-spacing:2px;}
+.loader-bar{width:120px;height:3px;background:var(--blush-deep);border-radius:3px;overflow:hidden;}
+.loader-fill{height:100%;background:linear-gradient(90deg,var(--rose),var(--mauve));animation:loadFill 1.4s ease forwards;}
+@keyframes loadFill{from{width:0}to{width:100%}}
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+nav{
+  position:sticky;top:0;z-index:500;height:60px;
+  background:rgba(255,251,246,0.95);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+}
+.nav-logo{
+  font-family:'Italiana',serif;font-size:28px;
+  background:linear-gradient(135deg,var(--rose-deep),var(--lavender));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;letter-spacing:1px;
+}
+.nav-links{display:flex;gap:20px;align-items:center;}
+.nav-links a{font-size:13px;font-weight:600;color:var(--mid);letter-spacing:0.3px;transition:color 0.2s;}
+.nav-links a:hover{color:var(--rose);}
+.nav-order{
+  background:linear-gradient(135deg,var(--rose),var(--rose-deep));
+  color:white;font-size:12px;font-weight:700;
+  padding:9px 18px;border-radius:24px;letter-spacing:0.4px;
+  box-shadow:0 4px 16px var(--shadow);transition:transform 0.2s,box-shadow 0.2s;
+  white-space:nowrap;
+}
+.nav-order:hover{transform:translateY(-2px);box-shadow:0 6px 22px var(--shadow-lg);}
+.nav-ham{
+  display:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;
+}
+.nav-ham span{width:22px;height:2px;background:var(--dark-mid);border-radius:2px;transition:all 0.3s;}
+.mobile-menu{
+  display:none;position:fixed;top:60px;left:0;right:0;z-index:499;
+  background:rgba(255,251,246,0.98);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  flex-direction:column;align-items:center;gap:0;
+  transition:opacity 0.3s ease,transform 0.3s ease;
+  opacity:0;transform:translateY(-10px);pointer-events:none;
+}
+.mobile-menu.open{opacity:1;transform:translateY(0);pointer-events:all;}
+.mobile-menu a{
+  display:block;width:100%;text-align:center;padding:16px;
+  font-size:15px;font-weight:600;color:var(--dark-mid);
+  border-bottom:1px solid var(--border);
+}
+.mobile-menu a:last-child{border:none;color:var(--rose);}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero{
+  min-height:100svh;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#FFF0F6 0%,#FFFBF6 30%,#F0EAFF 60%,#E8F5F0 100%);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:80px 24px 60px;text-align:center;
+}
+/* Floating blobs */
+.blob{
+  position:absolute;border-radius:50%;filter:blur(55px);
+  pointer-events:none;animation:blobFloat ease-in-out infinite;
+}
+.b1{width:340px;height:340px;background:rgba(232,85,122,0.18);top:-100px;right:-80px;animation-duration:7s;}
+.b2{width:280px;height:280px;background:rgba(155,126,200,0.15);bottom:-60px;left:-60px;animation-duration:9s;animation-delay:1s;}
+.b3{width:200px;height:200px;background:rgba(78,173,167,0.12);top:30%;right:5%;animation-duration:11s;animation-delay:2s;}
+.b4{width:160px;height:160px;background:rgba(232,184,75,0.12);bottom:20%;left:8%;animation-duration:8s;animation-delay:3s;}
+@keyframes blobFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-20px) scale(1.05);}}
+
+/* Floating emoji rings */
+.float-ring{
+  position:absolute;font-size:22px;
+  animation:floatRing ease-in-out infinite;pointer-events:none;opacity:0.7;
+}
+.fr1{top:15%;left:8%;animation-duration:4s;}
+.fr2{top:20%;right:10%;animation-duration:5s;animation-delay:0.5s;}
+.fr3{bottom:25%;left:5%;animation-duration:6s;animation-delay:1s;}
+.fr4{bottom:30%;right:8%;animation-duration:4.5s;animation-delay:1.5s;}
+.fr5{top:50%;left:3%;animation-duration:5.5s;animation-delay:0.8s;}
+@keyframes floatRing{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-14px) rotate(10deg);}}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:white;border:1px solid var(--rose-soft);
+  border-radius:30px;padding:8px 20px;margin-bottom:24px;
+  font-size:12px;font-weight:700;color:var(--rose-deep);letter-spacing:0.8px;text-transform:uppercase;
+  box-shadow:0 4px 20px var(--shadow);
+  animation:fadeDown 0.8s ease 0.5s both;
+}
+.hero-badge::before{
+  content:'';width:8px;height:8px;border-radius:50%;
+  background:var(--rose);animation:pulse 2s ease infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.4);}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px);}to{opacity:1;transform:translateY(0);}}
+
+.hero h1{
+  font-family:'Italiana',serif;
+  font-size:clamp(46px,12vw,84px);
+  line-height:1.05;color:var(--dark);
+  margin-bottom:8px;
+  animation:fadeUp 0.9s ease 0.7s both;
+}
+.hero h1 .script{
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(38px,10vw,68px);
+  background:linear-gradient(120deg,var(--rose) 0%,var(--lavender) 50%,var(--teal) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  display:block;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+.hero-sub{
+  font-size:16px;color:var(--mid);line-height:1.8;
+  max-width:380px;margin:0 auto 36px;font-weight:400;
+  animation:fadeUp 0.9s ease 0.9s both;
+}
+.hero-actions{
+  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  animation:fadeUp 0.9s ease 1.1s both;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--rose) 0%,var(--rose-deep) 100%);
+  color:white;font-family:'Nunito',sans-serif;
+  font-size:15px;font-weight:700;padding:15px 32px;border-radius:30px;
+  box-shadow:0 6px 28px var(--shadow-lg);transition:all 0.3s;border:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 36px var(--shadow-lg);}
+.btn-secondary{
+  background:white;color:var(--rose-deep);
+  font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;
+  padding:14px 28px;border-radius:30px;
+  border:2px solid var(--rose-soft);transition:all 0.25s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-secondary:hover{background:var(--blush);border-color:var(--rose);}
+
+/* Hero Counters */
+.hero-counters{
+  display:flex;background:white;border-radius:24px;
+  box-shadow:0 8px 36px var(--shadow);border:1px solid var(--border);
+  overflow:hidden;margin-top:44px;
+  animation:fadeUp 0.9s ease 1.3s both;
+}
+.counter{flex:1;padding:18px 12px;text-align:center;position:relative;}
+.counter+.counter::before{content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background:var(--border);}
+.counter-num{
+  font-family:'Italiana',serif;font-size:30px;
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.counter-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;margin-top:2px;}
+
+/* ═══════════════════════════════════════════
+   MARQUEE
+═══════════════════════════════════════════ */
+.marquee-wrap{
+  background:linear-gradient(135deg,var(--rose-deep) 0%,var(--lavender) 50%,var(--teal) 100%);
+  padding:13px 0;overflow:hidden;
+}
+.marquee-inner{display:flex;white-space:nowrap;animation:marquee 22s linear infinite;}
+.marquee-inner:hover{animation-play-state:paused;}
+.m-item{font-size:13px;font-weight:700;color:white;padding:0 24px;letter-spacing:0.8px;opacity:0.92;}
+.m-dot{color:rgba(255,255,255,0.45);font-size:14px;}
+
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ═══════════════════════════════════════════
+   SECTIONS SHARED
+═══════════════════════════════════════════ */
+.section{padding:64px 20px;}
+.section-center{text-align:center;margin-bottom:36px;}
+.s-tag{
+  display:inline-block;font-size:11px;font-weight:800;
+  letter-spacing:2px;text-transform:uppercase;color:var(--rose);
+  background:var(--blush);padding:5px 16px;border-radius:20px;margin-bottom:10px;
+}
+.s-title{
+  font-family:'Italiana',serif;
+  font-size:clamp(32px,7vw,48px);line-height:1.2;color:var(--dark);
+}
+.s-title em{font-style:italic;color:var(--rose);}
+.s-title span{
+  font-family:'Dancing Script',cursive;font-size:clamp(28px,6vw,42px);
+  background:linear-gradient(120deg,var(--rose),var(--lavender));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.s-sub{font-size:14px;color:var(--muted);line-height:1.7;max-width:380px;margin:10px auto 0;}
+
+/* ═══════════════════════════════════════════
+   PRODUCT CATEGORY CARDS
+═══════════════════════════════════════════ */
+.cat-bg{background:var(--warm);}
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+
+.cat-card{
+  border-radius:24px;overflow:hidden;cursor:pointer;
+  position:relative;transition:transform 0.3s,box-shadow 0.3s;
+  box-shadow:0 4px 20px rgba(0,0,0,0.07);
+}
+.cat-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,0,0,0.13);}
+.cat-card.tall{grid-row:span 2;}
+.cat-card.wide{grid-column:span 2;}
+
+.cat-img{
+  width:100%;display:flex;align-items:center;justify-content:center;
+  font-size:54px;height:140px;position:relative;overflow:hidden;
+}
+.cat-card.tall .cat-img{height:100%;min-height:280px;flex-direction:column;gap:8px;font-size:42px;}
+.cat-card.wide .cat-img{height:150px;font-size:60px;}
+
+/* Category colour themes */
+.cc-rose{background:linear-gradient(145deg,#FDE8F0,#F5B8CC);}
+.cc-lav{background:linear-gradient(145deg,#F0EAFF,#D8C5F5);}
+.cc-teal{background:linear-gradient(145deg,#E0F4F3,#A8DDD9);}
+.cc-gold{background:linear-gradient(145deg,#FEF5DC,#F5D88A);}
+.cc-sage{background:linear-gradient(145deg,#E8F5EC,#B5D9BC);}
+.cc-coral{background:linear-gradient(145deg,#FEF0EB,#F9C5B0);}
+.cc-mauve{background:linear-gradient(145deg,#F5EAF5,#DFB8DF);}
+.cc-dark{background:linear-gradient(145deg,#2D0F1E,#4A1A30);}
+
+.cat-body{padding:16px 18px 18px;background:white;}
+.cat-card.wide .cat-body{padding:14px 18px 16px;}
+.cat-pill{
+  display:inline-block;font-size:10px;font-weight:800;
+  letter-spacing:1px;text-transform:uppercase;
+  padding:4px 12px;border-radius:10px;margin-bottom:8px;
+}
+.pill-rose{background:var(--blush);color:var(--rose-deep);}
+.pill-lav{background:var(--lav-lt);color:var(--lavender);}
+.pill-teal{background:var(--teal-lt);color:var(--teal);}
+.pill-gold{background:var(--gold-lt);color:#9A6A00;}
+.pill-sage{background:var(--sage-lt);color:#3A7A4A;}
+.pill-coral{background:var(--coral-lt);color:var(--coral);}
+.pill-mauve{background:var(--mauve-lt);color:#8A4A8A;}
+.cat-name{font-family:'Italiana',serif;font-size:20px;color:var(--dark);margin-bottom:4px;}
+.cat-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.cat-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+.cat-price{font-size:16px;font-weight:800;color:var(--rose);}
+.cat-price small{font-size:11px;font-weight:500;color:var(--muted);}
+.cat-btn{
+  width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--rose),var(--rose-deep));
+  color:white;font-size:18px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px var(--shadow);transition:transform 0.2s;flex-shrink:0;
+}
+.cat-btn:hover{transform:scale(1.15) rotate(90deg);}
+
+/* Bestseller ribbon */
+.ribbon{
+  position:absolute;top:14px;right:14px;z-index:2;
+  background:linear-gradient(135deg,var(--rose),var(--rose-deep));
+  color:white;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  padding:5px 12px;border-radius:12px;
+  box-shadow:0 2px 10px var(--shadow);
+}
+.ribbon.gold{background:linear-gradient(135deg,var(--gold),#C98A00);}
+.ribbon.new{background:linear-gradient(135deg,var(--teal),#2A7A76);}
+
+/* ═══════════════════════════════════════════
+   BOUQUET SECTION
+═══════════════════════════════════════════ */
+.bouquet-bg{background:linear-gradient(160deg,var(--blush) 0%,var(--mauve-lt) 100%);}
+.bouquet-hero{
+  background:linear-gradient(135deg,var(--dark) 0%,#3A0F26 50%,var(--dark) 100%);
+  border-radius:28px;padding:36px 24px;margin-bottom:28px;
+  position:relative;overflow:hidden;
+}
+.bh-orb1{position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(232,85,122,0.25),transparent);top:-60px;right:-40px;}
+.bh-orb2{position:absolute;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(155,126,200,0.2),transparent);bottom:-40px;left:-20px;}
+.bh-tag{display:inline-block;background:rgba(232,85,122,0.25);border:1px solid rgba(232,85,122,0.4);color:var(--rose-soft);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px;}
+.bouquet-hero h2{font-family:'Italiana',serif;font-size:clamp(28px,7vw,42px);color:white;line-height:1.2;margin-bottom:10px;}
+.bouquet-hero h2 em{font-style:italic;color:var(--rose-soft);}
+.bouquet-hero p{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:22px;}
+.bouquet-emojis{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;}
+.bq-e{
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);
+  border-radius:12px;padding:12px 14px;text-align:center;min-width:68px;
+}
+.bq-e .be{font-size:22px;}
+.bq-e .bl{font-size:10px;color:rgba(255,255,255,0.5);font-weight:600;margin-top:4px;}
+
+.bouquet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.bq-card{
+  background:white;border-radius:20px;overflow:hidden;
+  box-shadow:0 4px 20px var(--shadow);transition:transform 0.3s;
+  border:1px solid rgba(232,85,122,0.1);
+}
+.bq-card:hover{transform:translateY(-5px);}
+.bq-visual{height:120px;display:flex;align-items:center;justify-content:center;font-size:42px;position:relative;}
+.bq-info{padding:14px;}
+.bq-name{font-family:'Italiana',serif;font-size:17px;color:var(--dark);margin-bottom:3px;}
+.bq-desc{font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;}
+.bq-price{font-size:17px;font-weight:800;color:var(--rose);}
+
+/* ═══════════════════════════════════════════
+   COUPLE GIFTS SECTION  ♥
+═══════════════════════════════════════════ */
+.couple-bg{background:var(--cream);}
+.couple-main{
+  background:linear-gradient(135deg,#FFF0F6,#F0EAFF);
+  border-radius:28px;padding:32px 22px;margin-bottom:24px;
+  border:1px solid rgba(232,85,122,0.15);
+  text-align:center;position:relative;overflow:hidden;
+}
+.couple-main::before{
+  content:'♥';position:absolute;font-size:180px;
+  color:rgba(232,85,122,0.05);top:50%;left:50%;
+  transform:translate(-50%,-50%);pointer-events:none;
+}
+.couple-main h3{
+  font-family:'Dancing Script',cursive;font-size:36px;
+  color:var(--rose-deep);margin-bottom:8px;
+}
+.couple-main p{font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:24px;}
+.couple-items{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;}
+.cp-item{
+  background:white;border-radius:16px;padding:18px 14px;text-align:center;
+  border:1.5px solid transparent;cursor:pointer;transition:all 0.25s;
+  box-shadow:0 2px 12px var(--shadow);
+}
+.cp-item:hover,.cp-item.sel{border-color:var(--rose);background:var(--blush);}
+.cp-ico{font-size:30px;margin-bottom:8px;}
+.cp-name{font-size:13px;font-weight:700;color:var(--dark);}
+.cp-p{font-size:12px;color:var(--rose);font-weight:700;margin-top:3px;}
+
+/* ═══════════════════════════════════════════
+   CULTURE / GIFT SECTION
+═══════════════════════════════════════════ */
+.culture-bg{
+  background:linear-gradient(160deg,#F0EAFF 0%,#E0F4F3 100%);
+}
+.culture-cards{display:grid;grid-template-columns:1fr;gap:16px;}
+.cult-card{
+  background:white;border-radius:24px;overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,0.07);transition:transform 0.3s;display:flex;
+}
+.cult-card:hover{transform:translateY(-4px);}
+.cult-visual{
+  width:100px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:38px;
+}
+.cv1{background:linear-gradient(135deg,#FDE8F0,#F5B8CC);}
+.cv2{background:linear-gradient(135deg,#F0EAFF,#D8C5F5);}
+.cv3{background:linear-gradient(135deg,#E0F4F3,#A8DDD9);}
+.cv4{background:linear-gradient(135deg,#FEF5DC,#F5D88A);}
+.cv5{background:linear-gradient(135deg,#E8F5EC,#B5D9BC);}
+.cult-info{padding:18px 16px;flex:1;}
+.cult-tag{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--rose);margin-bottom:5px;}
+.cult-name{font-family:'Italiana',serif;font-size:19px;color:var(--dark);margin-bottom:4px;}
+.cult-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:10px;}
+.cult-foot{display:flex;align-items:center;justify-content:space-between;}
+.cult-price{font-size:17px;font-weight:800;color:var(--rose);}
+.cult-btn{
+  font-size:11px;font-weight:700;color:var(--rose);
+  background:var(--blush);padding:6px 14px;border-radius:12px;
+  border:none;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px;
+}
+.cult-btn:hover{background:var(--rose);color:white;}
+
+/* ═══════════════════════════════════════════
+   PROCESS / HOW IT WORKS
+═══════════════════════════════════════════ */
+.process-bg{
+  background:linear-gradient(135deg,var(--dark) 0%,#3A0F26 100%);
+}
+.process-bg .s-title,.process-bg .s-sub{color:rgba(255,255,255,0.85);}
+.process-bg .s-tag{background:rgba(232,85,122,0.25);color:var(--rose-soft);}
+.process-steps{display:flex;flex-direction:column;gap:0;position:relative;margin-top:36px;}
+.process-steps::before{
+  content:'';position:absolute;left:28px;top:24px;bottom:24px;width:2px;
+  background:linear-gradient(to bottom,var(--rose),var(--lavender),var(--teal));
+}
+.step{
+  display:flex;gap:20px;align-items:flex-start;padding:0 0 28px 0;position:relative;
+}
+.step:last-child{padding-bottom:0;}
+.step-num{
+  width:56px;height:56px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--rose),var(--rose-deep));
+  color:white;font-family:'Italiana',serif;font-size:22px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px var(--shadow-lg);position:relative;z-index:1;
+  border:3px solid rgba(255,255,255,0.15);
+}
+.step-body{padding-top:8px;}
+.step-title{font-size:16px;font-weight:800;color:white;margin-bottom:5px;}
+.step-desc{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;}
+
+/* ═══════════════════════════════════════════
+   TESTIMONIALS — AUTO SCROLL
+═══════════════════════════════════════════ */
+.testi-bg{background:var(--warm);}
+.testi-viewport{overflow:hidden;position:relative;margin-top:28px;}
+.testi-track{
+  display:flex;gap:16px;
+  transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  will-change:transform;
+}
+.t-card{
+  min-width:calc(100vw - 72px);max-width:340px;flex-shrink:0;
+  background:white;border-radius:24px;padding:26px 22px;
+  box-shadow:0 6px 28px var(--shadow);
+  border:1px solid rgba(232,85,122,0.12);
+  position:relative;overflow:hidden;
+}
+.t-card::before{
+  content:'"';position:absolute;
+  font-family:'Italiana',serif;font-size:120px;
+  color:rgba(232,85,122,0.06);top:-10px;left:10px;line-height:1;
+}
+.t-stars{display:flex;gap:3px;margin-bottom:14px;}
+.t-star{
+  width:15px;height:15px;
+  background:linear-gradient(135deg,var(--gold),#D4900A);
+  clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+}
+.t-text{
+  font-family:'Italiana',serif;font-size:17px;color:var(--dark-mid);
+  line-height:1.7;font-style:italic;margin-bottom:18px;
+}
+.t-footer{display:flex;align-items:center;gap:12px;}
+.t-av{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;color:white;
+}
+.a1{background:linear-gradient(135deg,var(--rose),var(--rose-deep));}
+.a2{background:linear-gradient(135deg,var(--lavender),#7755B0);}
+.a3{background:linear-gradient(135deg,var(--teal),#2A7A76);}
+.a4{background:linear-gradient(135deg,var(--gold),#C07000);}
+.a5{background:linear-gradient(135deg,var(--coral),#C04030);}
+.a6{background:linear-gradient(135deg,var(--sage),#3A7A4A);}
+.t-name{font-size:14px;font-weight:800;color:var(--dark);}
+.t-city{font-size:11px;color:var(--muted);margin-top:1px;}
+.t-item{font-size:11px;color:var(--rose);font-weight:700;margin-top:1px;}
+.testi-controls{display:flex;justify-content:center;gap:8px;margin-top:20px;}
+.t-dot{width:8px;height:8px;border-radius:50%;background:rgba(232,85,122,0.2);cursor:pointer;transition:all 0.3s;}
+.t-dot.act{background:var(--rose);width:24px;border-radius:4px;}
+
+/* ═══════════════════════════════════════════
+   WHY SECTION
+═══════════════════════════════════════════ */
+.why-bg{background:linear-gradient(160deg,var(--blush) 0%,var(--lav-lt) 100%);}
+.why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:28px;}
+.w-card{
+  background:white;border-radius:20px;padding:22px 18px;
+  box-shadow:0 4px 20px var(--shadow);transition:transform 0.25s;
+}
+.w-card:hover{transform:translateY(-4px);}
+.w-icon{
+  width:52px;height:52px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;margin-bottom:14px;
+}
+.wi1{background:linear-gradient(135deg,var(--blush),var(--blush-deep));}
+.wi2{background:linear-gradient(135deg,var(--lav-lt),#D8C5F5);}
+.wi3{background:linear-gradient(135deg,var(--teal-lt),#A8DDD9);}
+.wi4{background:linear-gradient(135deg,var(--gold-lt),#F5D88A);}
+.wi5{background:linear-gradient(135deg,var(--sage-lt),#B5D9BC);}
+.wi6{background:linear-gradient(135deg,var(--coral-lt),#F9C5B0);}
+.w-card h3{font-size:15px;font-weight:800;color:var(--dark);margin-bottom:5px;}
+.w-card p{font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* ═══════════════════════════════════════════
+   PRICING
+═══════════════════════════════════════════ */
+.price-bg{background:var(--cream);}
+.price-cards{display:grid;grid-template-columns:1fr;gap:14px;margin-top:28px;}
+.p-card{
+  background:white;border-radius:24px;padding:24px 20px;
+  box-shadow:0 4px 24px var(--shadow);border:2px solid transparent;
+  transition:all 0.3s;position:relative;
+}
+.p-card:hover{border-color:var(--rose-soft);transform:translateY(-4px);}
+.p-card.popular{
+  border-color:var(--rose);
+  background:linear-gradient(160deg,white,var(--blush));
+}
+.pop-badge{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--rose),var(--rose-deep));
+  color:white;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  padding:5px 18px;border-radius:14px;white-space:nowrap;
+  box-shadow:0 4px 14px var(--shadow-lg);
+}
+.p-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.p-name{font-family:'Italiana',serif;font-size:22px;color:var(--dark);}
+.p-emoji{font-size:26px;}
+.p-price-wrap{margin-bottom:16px;}
+.p-price{font-family:'Italiana',serif;font-size:38px;color:var(--rose);}
+.p-range{font-size:13px;color:var(--muted);font-weight:400;font-family:'Nunito',sans-serif;}
+.p-divider{height:1px;background:var(--border);margin-bottom:16px;}
+.p-features{display:flex;flex-direction:column;gap:8px;}
+.p-feat{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--mid);}
+.p-check{
+  width:20px;height:20px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--rose),var(--rose-deep));
+  color:white;font-size:10px;
+  display:flex;align-items:center;justify-content:center;font-weight:800;
+}
+
+/* ═══════════════════════════════════════════
+   INSTAGRAM STRIP
+═══════════════════════════════════════════ */
+.insta-wrap{
+  margin:0 20px 64px;border-radius:32px;overflow:hidden;
+  background:linear-gradient(135deg,#405DE6,#5851DB,#833AB4,#C13584,#E1306C,#FD1D1D,#F56040,#F77737,#FCAF45,#FFDC80);
+  padding:48px 28px;text-align:center;
+  box-shadow:0 10px 40px rgba(193,53,132,0.3);
+}
+.insta-wrap h2{font-family:'Italiana',serif;font-size:38px;color:white;margin-bottom:10px;}
+.insta-wrap p{font-size:14px;color:rgba(255,255,255,0.85);margin-bottom:28px;line-height:1.7;}
+.insta-stats{display:flex;justify-content:center;gap:28px;margin-bottom:28px;}
+.is-item .isn{font-family:'Italiana',serif;font-size:28px;color:white;}
+.is-item .isl{font-size:11px;color:rgba(255,255,255,0.7);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;}
+.ig-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:white;border-radius:30px;padding:14px 28px;
+  color:#C13584;font-weight:800;font-size:14px;
+  box-shadow:0 6px 24px rgba(0,0,0,0.2);transition:transform 0.2s;
+}
+.ig-btn:hover{transform:scale(1.04);}
+
+/* ═══════════════════════════════════════════
+   ORDER FORM
+═══════════════════════════════════════════ */
+.order-bg{background:var(--warm);}
+.order-wrap{
+  background:white;border-radius:32px;padding:36px 24px;
+  box-shadow:0 10px 48px var(--shadow-lg);
+  border:1px solid rgba(232,85,122,0.15);
+}
+.order-wrap h2{font-family:'Italiana',serif;font-size:38px;color:var(--dark);margin-bottom:6px;}
+.order-wrap>p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;}
+.order-cats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:22px;}
+.oc{
+  background:var(--warm);border-radius:14px;padding:15px 12px;text-align:center;
+  cursor:pointer;border:1.5px solid transparent;transition:all 0.25s;
+}
+.oc:hover,.oc.on{border-color:var(--rose);background:var(--blush);}
+.oc .oi{font-size:26px;margin-bottom:6px;}
+.oc .on2{font-size:12px;font-weight:700;color:var(--dark);}
+.oc .op{font-size:11px;color:var(--rose);font-weight:700;margin-top:2px;}
+.order-cta{display:flex;flex-direction:column;gap:12px;}
+.oc-insta{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  background:linear-gradient(135deg,#833AB4,#C13584,#E1306C);
+  color:white;font-weight:800;font-size:15px;
+  padding:17px 24px;border-radius:22px;
+  box-shadow:0 6px 24px rgba(193,53,132,0.3);transition:opacity 0.2s;
+}
+.oc-insta:hover{opacity:0.9;}
+.oc-wa{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  color:white;font-weight:800;font-size:15px;
+  padding:17px 24px;border-radius:22px;
+  box-shadow:0 6px 24px rgba(37,211,102,0.3);transition:opacity 0.2s;
+}
+.oc-wa:hover{opacity:0.9;}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer{
+  background:var(--dark);padding:48px 24px 32px;
+}
+.footer-inner{max-width:480px;margin:0 auto;}
+.f-logo{
+  font-family:'Italiana',serif;font-size:40px;
+  background:linear-gradient(135deg,var(--rose-soft),var(--mauve));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-align:center;margin-bottom:8px;
+}
+.f-script{
+  font-family:'Dancing Script',cursive;font-size:16px;
+  color:rgba(255,255,255,0.35);text-align:center;margin-bottom:28px;
+}
+.f-links{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:6px;
+  padding:20px 0;border-top:1px solid rgba(255,255,255,0.07);
+  border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:20px;
+}
+.f-links a{font-size:12px;font-weight:600;color:rgba(255,255,255,0.45);padding:4px 12px;border-radius:10px;transition:color 0.2s;}
+.f-links a:hover{color:var(--rose-soft);}
+.f-copy{font-size:11px;color:rgba(255,255,255,0.2);text-align:center;line-height:1.8;}
+
+/* ═══════════════════════════════════════════
+   WA FAB
+═══════════════════════════════════════════ */
+.wa-fab{
+  position:fixed;bottom:24px;right:20px;z-index:900;
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  color:white;font-size:26px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 24px rgba(37,211,102,0.5);
+  animation:waBeat 2.5s ease infinite;
+}
+@keyframes waBeat{
+  0%,100%{box-shadow:0 4px 24px rgba(37,211,102,0.5);}
+  50%{box-shadow:0 4px 36px rgba(37,211,102,0.7),0 0 0 10px rgba(37,211,102,0.1);}
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+.reveal-l{opacity:0;transform:translateX(-28px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal-l.vis{opacity:1;transform:translateX(0);}
+.reveal-r{opacity:0;transform:translateX(28px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal-r.vis{opacity:1;transform:translateX(0);}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:360px){
+  .cat-card.tall .cat-img{min-height:220px;}
+  .hero h1{font-size:40px;}
+}
+@media(min-width:540px){
+  .cat-grid{grid-template-columns:repeat(3,1fr);}
+  .cat-card.wide{grid-column:span 3;}
+  .why-grid{grid-template-columns:repeat(3,1fr);}
+  .price-cards{grid-template-columns:repeat(2,1fr);}
+  .bouquet-grid{grid-template-columns:repeat(3,1fr);}
+  .culture-cards{grid-template-columns:repeat(2,1fr);}
+  .cult-card{flex-direction:column;}
+  .cult-visual{width:100%;height:100px;}
+  .couple-items{grid-template-columns:repeat(4,1fr);}
+  .order-cats{grid-template-columns:repeat(4,1fr);}
+}
+@media(min-width:768px){
+  nav .nav-links{display:flex;}
+  .nav-ham{display:none !important;}
+  .hero-sub{max-width:460px;}
+  .price-cards{grid-template-columns:repeat(3,1fr);}
+  .process-steps::before{left:30px;}
+}
+@media(max-width:600px){
+  .nav-links{display:none;}
+  .nav-ham{display:flex;}
+  .mobile-menu{display:flex;}
+}
+</style>
+  </head>
+  <body>
+
+    <!-- LOADER -->
+    <div id="loader">
+      <div class="loader-logo">Knotique</div>
+      <div class="loader-bar"><div class="loader-fill"></div></div>
+    </div>
+
+    <!-- NAV -->
+    <nav>
+      <div class="nav-logo">Knotique ✦</div>
+      <div class="nav-links">
+        <a href="#shop">Shop</a>
+        <a href="#bouquets">Bouquets</a>
+        <a href="#couple">Gifts</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#order">Order</a>
+      </div>
+      <a href="#order" class="nav-order">Order Now ✨</a>
+      <div class="nav-ham" id="hamBtn" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#shop" onclick="closeMenu()">Shop Collection</a>
+      <a href="#bouquets" onclick="closeMenu()">Bouquets</a>
+      <a href="#couple" onclick="closeMenu()">Couple Gifts</a>
+      <a href="#culture" onclick="closeMenu()">Culture Gifts</a>
+      <a href="#reviews" onclick="closeMenu()">Reviews</a>
+      <a href="#order" onclick="closeMenu()">Order Now ✨</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
+      <div class="blob b4"></div>
+      <div class="float-ring fr1">🌸</div>
+      <div class="float-ring fr2">🧶</div>
+      <div class="float-ring fr3">🎀</div>
+      <div class="float-ring fr4">💕</div>
+      <div class="float-ring fr5">✨</div>
+
+      <div class="hero-badge">✦ Taking Custom Orders Now</div>
+      <h1>
+        Handmade<br>
+        <span class="script">Crochet Wonders</span>
+      </h1>
+      <p class="hero-sub">Yarn, wool & pure creativity — every bouquet,
+        accessory and gift crafted stitch by stitch with love just for you.</p>
+      <div class="hero-actions">
+        <a href="#shop" class="btn-primary">✦ Explore Collection</a>
+        <a href="https://www.instagram.com/knotique22" target="_blank"
+          class="btn-secondary">📸 @knotique22</a>
+      </div>
+      <div class="hero-counters reveal">
+        <div class="counter"><div class="counter-num">156+</div><div
+            class="counter-label">Posts</div></div>
+        <div class="counter"><div class="counter-num">2.2K</div><div
+            class="counter-label">Followers</div></div>
+        <div class="counter"><div class="counter-num">500+</div><div
+            class="counter-label">Happy Clients</div></div>
+        <div class="counter"><div class="counter-num">100%</div><div
+            class="counter-label">Handmade</div></div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-wrap">
+      <div class="marquee-inner">
+        <span class="m-item">🌸 Crochet Bouquets</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">🧶 Handmade with Love</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">🎀 Custom Orders Welcome</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">💕 Couple Gift Sets</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">🌺 Culture & Occasion Gifts</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">✨ Pan India Delivery</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">🎁 Personalised Hampers</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">🌸 Crochet Bouquets</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">🧶 Handmade with Love</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">🎀 Custom Orders Welcome</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">💕 Couple Gift Sets</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">🌺 Culture & Occasion Gifts</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">✨ Pan India Delivery</span><span
+          class="m-dot">✦</span>
+        <span class="m-item">🎁 Personalised Hampers</span><span
+          class="m-dot">✦</span>
+      </div>
+    </div>
+
+    <!-- SHOP COLLECTION -->
+    <section class="section cat-bg" id="shop">
+      <div class="section-center reveal">
+        <div class="s-tag">✦ Shop Now</div>
+        <div class="s-title">Our <em>Collection</em></div>
+        <div class="s-sub">Handmade pieces for every occasion — choose your
+          favourite or go fully custom.</div>
+      </div>
+      <div class="cat-grid">
+
+        <!-- Wide Bestseller -->
+        <div class="cat-card wide reveal">
+          <div class="cat-img cc-rose">
+            🌹🌷🌸
+            <span class="ribbon">⭐ Bestseller</span>
+          </div>
+          <div class="cat-body">
+            <div class="cat-pill pill-rose">Bouquet</div>
+            <div class="cat-name">Classic Rose Bouquet</div>
+            <div class="cat-desc">Eternal handmade roses that never wilt —
+              wrapped beautifully for any occasion</div>
+            <div class="cat-row"><div class="cat-price">₹499
+                <small>onwards</small></div><button class="cat-btn"
+                onclick="order('Classic Rose Bouquet')">+</button></div>
+          </div>
+        </div>
+
+        <!-- Tall Lily -->
+        <div class="cat-card tall reveal-l">
+          <div class="cat-img cc-lav">
+            🌺<br>💜<br>🌺
+            <span class="ribbon new">New</span>
+          </div>
+          <div class="cat-body">
+            <div class="cat-pill pill-lav">Bouquet</div>
+            <div class="cat-name">Lily Bloom Set</div>
+            <div class="cat-desc">Soft layered lilies in your choice of
+              colour</div>
+            <div class="cat-row"><div class="cat-price">₹599</div><button
+                class="cat-btn"
+                onclick="order('Lily Bloom Set')">+</button></div>
+          </div>
+        </div>
+
+        <!-- Claw Clips -->
+        <div class="cat-card reveal-r">
+          <div class="cat-img cc-gold">🎀<span
+              class="ribbon gold">Trending</span></div>
+          <div class="cat-body">
+            <div class="cat-pill pill-gold">Accessories</div>
+            <div class="cat-name">Crochet Claw Clips</div>
+            <div class="cat-desc">Stylish hair accessories in 20+ shades</div>
+            <div class="cat-row"><div class="cat-price">₹149</div><button
+                class="cat-btn"
+                onclick="order('Crochet Claw Clips')">+</button></div>
+          </div>
+        </div>
+
+        <!-- Love Bugs -->
+        <div class="cat-card reveal">
+          <div class="cat-img cc-sage">🐞💛</div>
+          <div class="cat-body">
+            <div class="cat-pill pill-sage">Mini Sets</div>
+            <div class="cat-name">Love Bugs</div>
+            <div class="cat-desc">Adorable amigurumi keychains & charms</div>
+            <div class="cat-row"><div class="cat-price">₹199</div><button
+                class="cat-btn" onclick="order('Love Bugs')">+</button></div>
+          </div>
+        </div>
+
+        <!-- Gift Hamper -->
+        <div class="cat-card reveal">
+          <div class="cat-img cc-mauve">🎁✨</div>
+          <div class="cat-body">
+            <div class="cat-pill pill-mauve">Custom</div>
+            <div class="cat-name">Gift Hamper</div>
+            <div class="cat-desc">Personalised crochet sets — you pick the
+              items</div>
+            <div class="cat-row"><div class="cat-price">₹799</div><button
+                class="cat-btn" onclick="order('Gift Hamper')">+</button></div>
+          </div>
+        </div>
+
+        <!-- Bags -->
+        <div class="cat-card reveal">
+          <div class="cat-img cc-teal">👜</div>
+          <div class="cat-body">
+            <div class="cat-pill pill-teal">Bags</div>
+            <div class="cat-name">Crochet Bags</div>
+            <div class="cat-desc">Handwoven tote bags & mini purses</div>
+            <div class="cat-row"><div class="cat-price">₹649</div><button
+                class="cat-btn" onclick="order('Crochet Bag')">+</button></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- BOUQUET SECTION -->
+    <section class="section bouquet-bg" id="bouquets">
+      <div class="section-center reveal">
+        <div class="s-tag">🌸 Speciality</div>
+        <div class="s-title">The <span>Bouquet Studio</span></div>
+        <div class="s-sub">Bouquets that last forever — pick your style, colours
+          & wrapping.</div>
+      </div>
+
+      <div class="bouquet-hero reveal">
+        <div class="bh-orb1"></div><div class="bh-orb2"></div>
+        <div class="bh-tag">✦ Our Signature Range</div>
+        <h2>Flowers That<br><em>Never Wilt</em></h2>
+        <p>Unlike real flowers, our crochet bouquets stay beautiful forever. A
+          keepsake your loved one will treasure for years.</p>
+        <div class="bouquet-emojis">
+          <div class="bq-e"><div class="be">🌹</div><div
+              class="bl">Roses</div></div>
+          <div class="bq-e"><div class="be">🌺</div><div
+              class="bl">Lilies</div></div>
+          <div class="bq-e"><div class="be">🌻</div><div
+              class="bl">Sunflowers</div></div>
+          <div class="bq-e"><div class="be">💐</div><div
+              class="bl">Mixed</div></div>
+          <div class="bq-e"><div class="be">🌷</div><div
+              class="bl">Tulips</div></div>
+        </div>
+        <a href="#order" class="btn-primary"
+          style="font-size:14px;padding:13px 28px;">Order Custom Bouquet →</a>
+      </div>
+
+      <div class="bouquet-grid">
+        <div class="bq-card reveal">
+          <div class="bq-visual cc-rose">🌹</div>
+          <div class="bq-info"><div class="bq-name">Mini Bouquet</div><div
+              class="bq-desc">5–7 flowers, small & cute</div><div
+              class="bq-price">₹299</div></div>
+        </div>
+        <div class="bq-card reveal">
+          <div class="bq-visual cc-lav">💐</div>
+          <div class="bq-info"><div class="bq-name">Standard Bouquet</div><div
+              class="bq-desc">10–15 flowers, gift-wrapped</div><div
+              class="bq-price">₹499</div></div>
+        </div>
+        <div class="bq-card reveal">
+          <div class="bq-visual cc-gold">🌻</div>
+          <div class="bq-info"><div class="bq-name">Grand Bouquet</div><div
+              class="bq-desc">20+ flowers, luxury packaging</div><div
+              class="bq-price">₹799</div></div>
+        </div>
+        <div class="bq-card reveal">
+          <div class="bq-visual cc-teal">🌺🌷</div>
+          <div class="bq-info"><div class="bq-name">L-U Bouquet</div><div
+              class="bq-desc">Spell it out with flowers</div><div
+              class="bq-price">₹599</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COUPLE GIFTS -->
+    <section class="section couple-bg" id="couple">
+      <div class="section-center reveal">
+        <div class="s-tag">♥ For Lovers</div>
+        <div class="s-title">Couple <em>Gift Sets</em></div>
+        <div class="s-sub">Because the best gifts come in pairs — perfect for
+          anniversaries, Valentine's & special moments.</div>
+      </div>
+
+      <div class="couple-main reveal">
+        <h3>Made for Two 💕</h3>
+        <p>Each couple set is custom-made — choose your colours, add
+          personalised initials, and wrap it beautifully as a surprise gift.</p>
+        <div class="couple-items">
+          <div class="cp-item" onclick="this.classList.toggle('sel')">
+            <div class="cp-ico">🌹🌹</div>
+            <div class="cp-name">Rose Duo</div>
+            <div class="cp-p">₹799</div>
+          </div>
+          <div class="cp-item" onclick="this.classList.toggle('sel')">
+            <div class="cp-ico">🐻🐼</div>
+            <div class="cp-name">Bear Couple</div>
+            <div class="cp-p">₹649</div>
+          </div>
+          <div class="cp-item" onclick="this.classList.toggle('sel')">
+            <div class="cp-ico">🎀🎀</div>
+            <div class="cp-name">Matching Set</div>
+            <div class="cp-p">₹399</div>
+          </div>
+          <div class="cp-item" onclick="this.classList.toggle('sel')">
+            <div class="cp-ico">💌🧶</div>
+            <div class="cp-name">Love Hamper</div>
+            <div class="cp-p">₹999</div>
+          </div>
+        </div>
+        <a href="#order" class="btn-primary"
+          style="font-size:14px;padding:13px 28px;">Order Couple Gift →</a>
+      </div>
+    </section>
+
+    <!-- CULTURE / OCCASION GIFTS -->
+    <section class="section culture-bg" id="culture">
+      <div class="section-center reveal">
+        <div class="s-tag">🎉 Every Occasion</div>
+        <div class="s-title">Culture & <em>Occasion Gifts</em></div>
+        <div class="s-sub">From festive seasons to personal milestones — a
+          crochet gift fits every celebration.</div>
+      </div>
+      <div class="culture-cards">
+        <div class="cult-card reveal-l">
+          <div class="cult-visual cv1">🪔</div>
+          <div class="cult-info">
+            <div class="cult-tag">Festival</div>
+            <div class="cult-name">Diwali Gift Set</div>
+            <div class="cult-desc">Festive crochet diyas, flowers & decorative
+              pieces wrapped in premium packaging</div>
+            <div class="cult-foot"><div class="cult-price">₹599</div><button
+                class="cult-btn" onclick="order('Diwali Gift Set')">Order
+                →</button></div>
+          </div>
+        </div>
+        <div class="cult-card reveal-r">
+          <div class="cult-visual cv2">🎂</div>
+          <div class="cult-info">
+            <div class="cult-tag">Birthday</div>
+            <div class="cult-name">Birthday Surprise Box</div>
+            <div class="cult-desc">Custom bouquet + claw clips + plushie — a
+              complete birthday treat in one box</div>
+            <div class="cult-foot"><div class="cult-price">₹799</div><button
+                class="cult-btn" onclick="order('Birthday Box')">Order
+                →</button></div>
+          </div>
+        </div>
+        <div class="cult-card reveal-l">
+          <div class="cult-visual cv3">💍</div>
+          <div class="cult-info">
+            <div class="cult-tag">Wedding</div>
+            <div class="cult-name">Bridal Crochet Set</div>
+            <div class="cult-desc">Handmade bouquet, corsage & hair accessories
+              for brides & bridesmaids</div>
+            <div class="cult-foot"><div class="cult-price">₹1499</div><button
+                class="cult-btn" onclick="order('Bridal Set')">Order
+                →</button></div>
+          </div>
+        </div>
+        <div class="cult-card reveal-r">
+          <div class="cult-visual cv4">🎓</div>
+          <div class="cult-info">
+            <div class="cult-tag">Graduation</div>
+            <div class="cult-name">Graduation Bouquet</div>
+            <div class="cult-desc">Celebrate success with a lasting crochet
+              bouquet personalised in their colours</div>
+            <div class="cult-foot"><div class="cult-price">₹499</div><button
+                class="cult-btn" onclick="order('Graduation Bouquet')">Order
+                →</button></div>
+          </div>
+        </div>
+        <div class="cult-card reveal-l">
+          <div class="cult-visual cv5">🌿</div>
+          <div class="cult-info">
+            <div class="cult-tag">Corporate</div>
+            <div class="cult-name">Corporate Gift Set</div>
+            <div class="cult-desc">Branded / personalised crochet gifts for
+              teams, clients & events — bulk orders welcome</div>
+            <div class="cult-foot"><div class="cult-price">₹349+</div><button
+                class="cult-btn" onclick="order('Corporate Set')">Order
+                →</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section process-bg">
+      <div class="section-center reveal">
+        <div class="s-tag">Simple Process</div>
+        <div class="s-title" style="color:white;">How It <em>Works</em></div>
+        <div class="s-sub">From your idea to doorstep — it's that easy!</div>
+      </div>
+      <div class="process-steps">
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">📸 Browse & Choose</div>
+            <div class="step-desc">Pick from our collection or share your own
+              idea — we love custom requests!</div>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">💬 DM or WhatsApp Us</div>
+            <div class="step-desc">Send us a message on Instagram @knotique22 or
+              WhatsApp with your order details.</div>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">🎨 We Craft It</div>
+            <div class="step-desc">We make your piece fresh — choosing the best
+              yarn, colours & finishing for you.</div>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">🚚 Delivered to You</div>
+            <div class="step-desc">Safely packed and shipped pan India. Your
+              beautiful handmade piece arrives at your door!</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section testi-bg" id="reviews">
+      <div class="section-center reveal">
+        <div class="s-tag">💕 Happy Customers</div>
+        <div class="s-title">They <em>Loved</em> It</div>
+        <div class="s-sub">Real reviews from real people who received Knotique
+          magic.</div>
+      </div>
+      <div class="testi-viewport reveal">
+        <div class="testi-track" id="tTrack">
+          <div class="t-card">
+            <div class="t-stars"><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div></div>
+            <div
+              class="t-text">"The bouquet was absolutely stunning! Every single person at my birthday party asked where I got it from. Will order again for sure!"</div>
+            <div class="t-footer"><div class="t-av a1">P</div><div><div
+                  class="t-name">Priya Sharma</div><div
+                  class="t-city">Delhi</div><div class="t-item">Classic Rose
+                  Bouquet</div></div></div>
+          </div>
+          <div class="t-card">
+            <div class="t-stars"><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div></div>
+            <div
+              class="t-text">"Ordered matching claw clips for me and my bestie — they turned out even better than I imagined. Super quick delivery too!"</div>
+            <div class="t-footer"><div class="t-av a2">S</div><div><div
+                  class="t-name">Sneha Rajput</div><div
+                  class="t-city">Mumbai</div><div class="t-item">Crochet Claw
+                  Clips Set</div></div></div>
+          </div>
+          <div class="t-card">
+            <div class="t-stars"><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div></div>
+            <div
+              class="t-text">"The couple gift set I ordered for our anniversary was so thoughtful and personal. My partner literally cried — it was perfect!"</div>
+            <div class="t-footer"><div class="t-av a3">A</div><div><div
+                  class="t-name">Ananya Kulkarni</div><div
+                  class="t-city">Pune</div><div class="t-item">Couple Gift
+                  Set</div></div></div>
+          </div>
+          <div class="t-card">
+            <div class="t-stars"><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div></div>
+            <div
+              class="t-text">"Got the Diwali gift set for my family — absolutely gorgeous! The packaging was beautiful and the crochet quality is amazing."</div>
+            <div class="t-footer"><div class="t-av a4">R</div><div><div
+                  class="t-name">Riya Mehta</div><div
+                  class="t-city">Indore</div><div class="t-item">Diwali Gift
+                  Set</div></div></div>
+          </div>
+          <div class="t-card">
+            <div class="t-stars"><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div></div>
+            <div
+              class="t-text">"The graduation bouquet for my sister was so unique and special. She keeps it displayed in her room — so much better than real flowers!"</div>
+            <div class="t-footer"><div class="t-av a5">M</div><div><div
+                  class="t-name">Muskan Verma</div><div
+                  class="t-city">Jaipur</div><div class="t-item">Graduation
+                  Bouquet</div></div></div>
+          </div>
+          <div class="t-card">
+            <div class="t-stars"><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div><div
+                class="t-star"></div><div class="t-star"></div></div>
+            <div
+              class="t-text">"Ordered 20 corporate gift sets for our company event — every single one was beautiful and professionally packed. The team loved them!"</div>
+            <div class="t-footer"><div class="t-av a6">N</div><div><div
+                  class="t-name">Neha Gupta</div><div
+                  class="t-city">Bangalore</div><div class="t-item">Corporate
+                  Gift Set</div></div></div>
+          </div>
+        </div>
+        <div class="testi-controls" id="tDots"></div>
+      </div>
+    </section>
+
+    <!-- WHY KNOTIQUE -->
+    <section class="section why-bg">
+      <div class="section-center reveal">
+        <div class="s-tag">Why Choose Us</div>
+        <div class="s-title">Cozy, Chic &<br><em>Crafted with Care</em></div>
+      </div>
+      <div class="why-grid">
+        <div class="w-card reveal"><div class="w-icon wi1">🧶</div><h3>100%
+            Handmade</h3><p>Every stitch crafted by hand using the finest
+            premium yarn & wool</p></div>
+        <div class="w-card reveal"><div class="w-icon wi2">🎨</div><h3>Fully
+            Custom</h3><p>Your colours, size, design & message — tailored
+            exactly to your vision</p></div>
+        <div class="w-card reveal"><div class="w-icon wi3">🚚</div><h3>Pan India
+            Shipping</h3><p>Secure packaging, shipped to every corner of India
+            with care</p></div>
+        <div class="w-card reveal"><div class="w-icon wi4">⚡</div><h3>Quick
+            Turnaround</h3><p>Most orders ready in 3–7 days — express options
+            available</p></div>
+        <div class="w-card reveal"><div
+            class="w-icon wi5">♻️</div><h3>Eco-Friendly</h3><p>Sustainable
+            materials, zero plastic packaging — kind to earth & to you</p></div>
+        <div class="w-card reveal"><div class="w-icon wi6">💖</div><h3>Made with
+            Love</h3><p>Your happiness is our purpose — we pour our heart into
+            every piece</p></div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section price-bg" id="pricing">
+      <div class="section-center reveal">
+        <div class="s-tag">💰 Clear Pricing</div>
+        <div class="s-title">Simple & <em>Honest</em> Prices</div>
+        <div class="s-sub">No hidden charges — what you see is what you pay.
+          Custom pricing available on request.</div>
+      </div>
+      <div class="price-cards">
+        <div class="p-card reveal">
+          <div class="p-top"><div class="p-name">Accessories</div><div
+              class="p-emoji">🎀</div></div>
+          <div class="p-price-wrap"><div class="p-price">₹149 <span
+                class="p-range">– ₹299</span></div></div>
+          <div class="p-divider"></div>
+          <div class="p-features">
+            <div class="p-feat"><div class="p-check">✓</div> Crochet Claw
+              Clips</div>
+            <div class="p-feat"><div class="p-check">✓</div> Keychains &
+              Charms</div>
+            <div class="p-feat"><div class="p-check">✓</div> Hair
+              Accessories</div>
+            <div class="p-feat"><div class="p-check">✓</div> 20+ Colour
+              Options</div>
+          </div>
+        </div>
+        <div class="p-card popular reveal">
+          <div class="pop-badge">✦ Most Popular</div>
+          <div class="p-top"><div class="p-name">Bouquets</div><div
+              class="p-emoji">🌹</div></div>
+          <div class="p-price-wrap"><div class="p-price">₹299 <span
+                class="p-range">– ₹799</span></div></div>
+          <div class="p-divider"></div>
+          <div class="p-features">
+            <div class="p-feat"><div class="p-check">✓</div> Mini / Standard /
+              Grand</div>
+            <div class="p-feat"><div class="p-check">✓</div> Any Flower
+              Type</div>
+            <div class="p-feat"><div class="p-check">✓</div> Custom Colour &
+              Size</div>
+            <div class="p-feat"><div class="p-check">✓</div> Gift Wrapping
+              Included</div>
+          </div>
+        </div>
+        <div class="p-card reveal">
+          <div class="p-top"><div class="p-name">Gift Sets</div><div
+              class="p-emoji">🎁</div></div>
+          <div class="p-price-wrap"><div class="p-price">₹599 <span
+                class="p-range">– ₹1499</span></div></div>
+          <div class="p-divider"></div>
+          <div class="p-features">
+            <div class="p-feat"><div class="p-check">✓</div> Couple / Occasion
+              Sets</div>
+            <div class="p-feat"><div class="p-check">✓</div> Personalised
+              Message Card</div>
+            <div class="p-feat"><div class="p-check">✓</div> Premium
+              Packaging</div>
+            <div class="p-feat"><div class="p-check">✓</div> Bulk Orders
+              Welcome</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTAGRAM -->
+    <div class="insta-wrap reveal" style="margin:0 20px 64px;">
+      <h2>Follow Our Journey ✨</h2>
+      <div class="insta-stats">
+        <div class="is-item"><div class="isn">2.2K</div><div
+            class="isl">Followers</div></div>
+        <div class="is-item"><div class="isn">156</div><div
+            class="isl">Posts</div></div>
+        <div class="is-item"><div class="isn">500+</div><div class="isl">Happy
+            Clients</div></div>
+      </div>
+      <p>Behind-the-scenes making, new drops, customer unboxings & more.<br>DM
+        us to place your order instantly!</p>
+      <a href="https://www.instagram.com/knotique22" target="_blank"
+        class="ig-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24"><rect width="24"
+            height="24" rx="6" fill="url(#IG)" /><circle cx="12" cy="12" r="4.5"
+            stroke="white" stroke-width="1.5" /><circle cx="17.5" cy="6.5"
+            r="1.2" fill="white" /><defs><lineargradient id="IG" x1="0" y1="24"
+              x2="24" y2="0"><stop stop-color="#833ab4" /><stop offset=".5"
+                stop-color="#fd1d1d" /><stop offset="1"
+                stop-color="#fcb045" /></lineargradient></defs></svg>
+        @knotique22
+      </a>
+    </div>
+
+    <!-- ORDER -->
+    <section class="section order-bg" id="order">
+      <div class="order-wrap reveal">
+        <h2>Place Your Order 🎀</h2>
+        <p>Every piece is freshly made just for you. Pick a category below then
+          reach us on Instagram or WhatsApp to confirm colours, customisation &
+          delivery details.</p>
+        <div class="order-cats">
+          <div class="oc" onclick="pickCat(this,'Crochet Bouquet')"><div
+              class="oi">🌹</div><div class="on2">Bouquet</div><div
+              class="op">From ₹299</div></div>
+          <div class="oc" onclick="pickCat(this,'Couple Gift')"><div
+              class="oi">💕</div><div class="on2">Couple Gift</div><div
+              class="op">From ₹649</div></div>
+          <div class="oc" onclick="pickCat(this,'Culture Gift')"><div
+              class="oi">🎉</div><div class="on2">Occasion</div><div
+              class="op">From ₹499</div></div>
+          <div class="oc" onclick="pickCat(this,'Accessory')"><div
+              class="oi">🎀</div><div class="on2">Accessory</div><div
+              class="op">From ₹149</div></div>
+          <div class="oc" onclick="pickCat(this,'Gift Hamper')"><div
+              class="oi">🎁</div><div class="on2">Hamper</div><div
+              class="op">From ₹799</div></div>
+          <div class="oc" onclick="pickCat(this,'Custom Design')"><div
+              class="oi">🎨</div><div class="on2">Custom</div><div
+              class="op">Let's chat!</div></div>
+        </div>
+        <div class="order-cta">
+          <a href="https://www.instagram.com/knotique22" target="_blank"
+            class="oc-insta">
+            <svg width="18" height="18" viewBox="0 0 24 24"><rect width="24"
+                height="24" rx="5" fill="rgba(255,255,255,0.2)" /><circle
+                cx="12" cy="12" r="4.5" stroke="white"
+                stroke-width="1.5" /><circle cx="17.5" cy="6.5" r="1.2"
+                fill="white" /></svg>
+            DM on Instagram @knotique22
+          </a>
+          <a
+            href="https://wa.me/91XXXXXXXXXX?text=Hi%20Knotique!%20I%20want%20to%20place%20an%20order%20%F0%9F%8C%B8"
+            target="_blank" class="oc-wa" id="waBtn">
+            💬 Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <div class="f-logo">Knotique</div>
+        <div class="f-script">Knot me pretty ✦ Handmade with love</div>
+        <div class="f-links">
+          <a href="#shop">Shop</a>
+          <a href="#bouquets">Bouquets</a>
+          <a href="#couple">Couple Gifts</a>
+          <a href="#culture">Occasion Gifts</a>
+          <a href="#reviews">Reviews</a>
+          <a href="https://www.instagram.com/knotique22"
+            target="_blank">Instagram</a>
+          <a href="#order">Order Now</a>
+        </div>
+        <div class="f-copy">Yarn, wool & creativity 🧶 · Handmade crochet
+          wonders · Pan India delivery<br>© 2026 Knotique. All rights reserved.
+          Made with 🧶 & lots of love.</div>
+      </div>
+    </footer>
+
+    <!-- WA FAB -->
+    <a
+      href="https://wa.me/91XXXXXXXXXX?text=Hi%20Knotique!%20I%20saw%20your%20website%20and%20would%20love%20to%20order%20%F0%9F%8C%B8"
+      target="_blank" class="wa-fab">💬</a>
+
+    <script>
+/* ── LOADER ── */
+window.addEventListener('load',()=>{
+  setTimeout(()=>document.getElementById('loader').classList.add('gone'),1600);
+});
+
+/* ── MOBILE NAV ── */
+function toggleMenu(){
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+document.addEventListener('click',e=>{
+  const m=document.getElementById('mobileMenu');
+  const h=document.getElementById('hamBtn');
+  if(!m.contains(e.target)&&!h.contains(e.target)) m.classList.remove('open');
+});
+
+/* ── SCROLL REVEAL ── */
+const allReveal=document.querySelectorAll('.reveal,.reveal-l,.reveal-r');
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting) setTimeout(()=>e.target.classList.add('vis'),i*55);
+  });
+},{threshold:0.07});
+allReveal.forEach(el=>ro.observe(el));
+
+/* ── TESTIMONIALS AUTO-SCROLL ── */
+const track=document.getElementById('tTrack');
+const dotsWrap=document.getElementById('tDots');
+const cards=track.querySelectorAll('.t-card');
+const total=cards.length;
+let cur=0,timer,isDragging=false,startX=0,dragX=0;
+
+cards.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='t-dot'+(i===0?' act':'');
+  d.onclick=()=>{stopAuto();goTo(i);startAuto();};
+  dotsWrap.appendChild(d);
+});
+
+function cardW(){
+  return cards[0].offsetWidth+16;
+}
+function goTo(idx){
+  cur=(idx+total)%total;
+  track.style.transform=`translateX(-${cur*cardW()}px)`;
+  document.querySelectorAll('.t-dot').forEach((d,i)=>d.classList.toggle('act',i===cur));
+}
+function next(){goTo(cur+1);}
+function startAuto(){timer=setInterval(next,3000);}
+function stopAuto(){clearInterval(timer);}
+startAuto();
+
+/* Touch/drag swipe */
+track.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;stopAuto();},{passive:true});
+track.addEventListener('touchend',e=>{
+  const diff=startX-e.changedTouches[0].clientX;
+  if(Math.abs(diff)>40) diff>0?goTo(cur+1):goTo(cur-1);
+  startAuto();
+},{passive:true});
+track.addEventListener('mousedown',e=>{isDragging=true;startX=e.clientX;stopAuto();});
+document.addEventListener('mouseup',e=>{
+  if(!isDragging)return;isDragging=false;
+  const diff=startX-e.clientX;
+  if(Math.abs(diff)>40) diff>0?goTo(cur+1):goTo(cur-1);
+  startAuto();
+});
+window.addEventListener('resize',()=>goTo(cur));
+
+/* ── ORDER SELECTION ── */
+function pickCat(el,name){
+  document.querySelectorAll('.oc').forEach(o=>o.classList.remove('on'));
+  el.classList.add('on');
+  const msg=encodeURIComponent(`Hi Knotique! 🌸 I'd like to order: ${name}. Can you help me with details and pricing?`);
+  document.getElementById('waBtn').href=`https://wa.me/91XXXXXXXXXX?text=${msg}`;
+}
+function order(name){
+  const msg=encodeURIComponent(`Hi Knotique! 🌸 I'd like to order: ${name}. Can you help me?`);
+  window.open(`https://wa.me/91XXXXXXXXXX?text=${msg}`,'_blank');
+}
+
+/* ── CURSOR SPARKLE ── */
+const sparkles=['🌸','✨','💕','🧶','⭐','🌺'];
+let spCount=0;
+document.addEventListener('click',e=>{
+  if(spCount>8)return;spCount++;
+  const s=document.createElement('div');
+  s.className='sparkle';
+  s.style.cssText=`left:${e.clientX-8}px;top:${e.clientY-8}px;`;
+  s.textContent=sparkles[Math.floor(Math.random()*sparkles.length)];
+  document.body.appendChild(s);
+  setTimeout(()=>{s.remove();spCount--;},800);
+});
+
+/* ── COUNTER ANIMATION ── */
+const nums=['156+','2.2K','500+','100%'];
+const targets=[156,2200,500,100];
+const counterEls=document.querySelectorAll('.counter-num');
+let counted=false;
+const co=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting&&!counted){
+      counted=true;
+      counterEls.forEach((el,i)=>{
+        let n=0;const end=targets[i];const dur=1400;const step=dur/60;
+        const inc=end/60;
+        const iv=setInterval(()=>{
+          n=Math.min(n+inc,end);
+          if(i===0)el.textContent=Math.round(n)+'+'
+          else if(i===1)el.textContent=(n/1000).toFixed(1)+'K'
+          else if(i===2)el.textContent=Math.round(n)+'+'
+          else el.textContent=Math.round(n)+'%';
+          if(n>=end)clearInterval(iv);
+        },step);
+      });
+    }
+  });
+},{threshold:0.5});
+if(counterEls[0]) co.observe(counterEls[0].closest('.hero-counters'));
+</script>
+  </body>
+</html>
